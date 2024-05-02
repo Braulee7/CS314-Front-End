@@ -1,10 +1,10 @@
 import { render } from "@testing-library/react";
-import CreateUser from ".";
+import Login from ".";
 
-describe("Create user form", () => {
+describe("Login form", () => {
   test("It Renders correctly", () => {
     // ARRANGE
-    const { getByLabelText } = render(<CreateUser />);
+    const { getByLabelText } = render(<Login />);
     const username_input = getByLabelText("Username:");
     const password_input = getByLabelText("Password:");
     // ACT
