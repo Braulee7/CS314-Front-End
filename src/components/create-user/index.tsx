@@ -1,86 +1,122 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { CreateUser } from "../../api/user";
 
-//Pretty sure this is how you make a struct? kinda? Its a thing that holds the UN and PW.
 interface UserCredentials {
   username: string;
   password: string;
+  confirm_password: string;
 }
 
-//The start of commands?
-// no need for any props
-function CreateUser() {
-  //I assume this makes a new instance of a thing?
+function CreateUserForm() {
   const [credentials, setCredentials] = useState<UserCredentials>({
     username: "",
     password: "",
+    confirm_password: "",
   });
 
-  //Things that check when you submit
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    //pevents the default, ie you need to put stuff in
+  const [errorMessage, setErrorMessage] = useState<string>("");
+
+  // send request to server to create user
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    // prevent default form submission
     event.preventDefault();
 
-    //if missing one or other, dont proceed and send an alert
-    //I dont even know if this works. I think I used HTML to preven the submit from working if it's not filled anyway?
-    if (!credentials.username || !credentials.password) {
-      alert("Please enter both username and password.");
+    // validate password and confirm password
+    if (credentials.password !== credentials.confirm_password) {
+      setErrorMessage("Passwords do not match");
+      return;
+    }
+
+    // send request to server to create user
+    try {
+      const uid = await CreateUser(credentials.username, credentials.password);
+      console.log(`User created with id: ${uid}`);
+      // clear error message
+      setErrorMessage("");
+      // redirect to home page and sign user in
+    } catch (error) {
+      // cast the error to correct type since catch needs
+      // to be of type any
+      const e = error as Error;
+      setErrorMessage(e.message);
       return;
     }
   };
 
-  //I think this is for inputs changing?
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setCredentials((prevState) => ({ ...prevState, [name]: value }));
-  };
-
   return (
-    <form onSubmit={handleSubmit}>
-      <div className=" min-h-screen bg-gray-300 flex justify-center items-start">
-        <div className="bg-white p-20 rounded shadow-md w-110">
-          <h1 className="text-2xl font-bold mb-4">Login To Your Account</h1>
-          <form id="loginForm">
-            <div className="mb-2">
-              <label htmlFor="username" className="block mb-1">
-                Username:
-              </label>
-              <input
-                type="text"
-                id="username"
-                name="username"
-                value={credentials.username}
-                onChange={handleChange}
-                className="w-full border"
-                required
-              />
-            </div>
-            {/* Don't ask to confirm password, maybe ask later */}
-            <div className="mb-2">
-              <label htmlFor="password" className="block mb-1">
-                Password:
-              </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={credentials.password}
-                onChange={handleChange}
-                className="w-full border"
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full text-lg rounded border hover:bg-blue-300"
-            >
-              Create Account
-            </button>
-          </form>
-          <p id="errorMessage" className="error"></p>
-        </div>
+    <div className=" min-h-screen bg-gray-300 flex justify-center items-start">
+      <div className="bg-white p-20 rounded shadow-md w-110">
+        <h1 className="text-2xl font-bold mb-4">Create a new account</h1>
+        <form id="create-user-form" onSubmit={handleSubmit}>
+          <div className="mb-2">
+            <label htmlFor="username" className="block mb-1">
+              Username:
+            </label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              value={credentials.username}
+              onChange={(e) =>
+                setCredentials({ ...credentials, username: e.target.value })
+              }
+              className="w-full border"
+              required
+            />
+          </div>
+          <div className="mb-2">
+            <label htmlFor="password" className="block mb-1">
+              Password:
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={credentials.password}
+              onChange={(e) =>
+                setCredentials({ ...credentials, password: e.target.value })
+              }
+              className="w-full border"
+              required
+            />
+          </div>
+          <div className="mb-2">
+            <label htmlFor="confirm-password" className="block mb-1">
+              Confirm Password:
+            </label>
+            <input
+              type="password"
+              id="confirm-password"
+              name="confirm-password"
+              value={credentials.confirm_password}
+              onChange={(e) =>
+                setCredentials({
+                  ...credentials,
+                  confirm_password: e.target.value,
+                })
+              }
+              className="w-full border"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full text-lg rounded border hover:bg-blue-300"
+          >
+            Create Account
+          </button>
+        </form>
+        {errorMessage && (
+          <div
+            className="p-4 mt-4 rounded bg-red-500 border border-red-700 ease-in"
+            id="errorMessage"
+          >
+            <p className="text-white">{errorMessage}</p>
+          </div>
+        )}
       </div>
-    </form>
+    </div>
   );
 }
 
-export default CreateUser;
+export default CreateUserForm;
