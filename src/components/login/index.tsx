@@ -40,6 +40,7 @@ function Login() {
       if (!response.ok) {
         throw new Error('Login failed');
       }
+      setErrorMessage('');
     } catch (error) {
         const e = error as Error;
         setErrorMessage(e.message);
