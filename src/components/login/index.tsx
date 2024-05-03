@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-//Pretty sure this is how you make a struct? kinda? Its a thing that holds the UN and PW.
+
 interface UserCredentials {
   username: string;
   password: string;
@@ -9,23 +9,42 @@ interface UserCredentials {
 //The start of commands?
 // no need for any props
 function Login() {
-  //I assume this makes a new instance of a thing?
+
   const [credentials, setCredentials] = useState<UserCredentials>({
     username: "",
     password: "",
   });
 
+  const [errorMessage, setErrorMessage] = useState<string>("");
+
   //Things that check when you submit
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    //pevents the default, ie you need to put stuff in
+  const handleSubmit =  async (event: React.FormEvent<HTMLFormElement>) => {
+    //pevents the default submission
     event.preventDefault();
 
-    //if missing one or other, dont proceed and send an alert
-    //I dont even know if this works. I think I used HTML to preven the submit from working if it's not filled anyway?
+    //confirm both are entered
     if (!credentials.username || !credentials.password) {
-      alert("Please enter both username and password.");
+      setErrorMessage("Please enter both username and password.");
       return;
     }
+
+    //try to fetch, catch if fail
+    try {
+      const response = await fetch('/user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(credentials),
+      });
+      if (!response.ok) {
+        throw new Error('Login failed');
+      }
+    } catch (error) {
+        const e = error as Error;
+        setErrorMessage(e.message);
+        return;
+      }
   };
 
   //I think this is for inputs changing?
@@ -73,10 +92,17 @@ function Login() {
               type="submit"
               className="w-full text-lg rounded border hover:bg-blue-300"
             >
-              Create Account
+              Login
             </button>
           </form>
-          <p id="errorMessage" className="error"></p>
+          {errorMessage && (
+          <div
+            className="p-4 mt-4 rounded bg-red-500 border border-red-700 ease-in"
+            id="errorMessage"
+          >
+            <p className="text-white">{errorMessage}</p>
+          </div>
+        )}
         </div>
       </div>
     </form>
