@@ -1,11 +1,23 @@
 import React from "react";
-import CreateUserForm from "./components/create-user";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Home from "./components/home";
+import Login from "./components/login";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+]);
 
 const App: React.FC = () => {
-  // currently only have a form to create a user
   return (
     <>
-      <CreateUserForm />
+      <RouterProvider router={router} />
     </>
   );
 };
