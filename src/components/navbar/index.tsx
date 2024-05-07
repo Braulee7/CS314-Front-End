@@ -13,7 +13,7 @@ function Navbar() {
         ☰
       </button>
       {show && (
-        <div className="fixed w-200 h-screen bg-gray-500 p-5 pt-14">
+        <div className="fixed w-200 h-screen p-5 pt-14 bg-gray-500">
           <Search />
           <h1>Create Group</h1>
           <br />
