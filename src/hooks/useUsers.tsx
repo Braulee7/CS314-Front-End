@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import Api from "../api";
+import Api, { UserObj } from "../api";
 
 export default function useUsers(
   user: Api
-): [string, React.Dispatch<React.SetStateAction<string>>, string[]] {
-  const [users, setUsers] = useState<string[]>([]);
+): [string, React.Dispatch<React.SetStateAction<string>>, UserObj[]] {
+  const [users, setUsers] = useState<UserObj[]>([]);
   const [username, setUsername] = useState("");
   const user_api = user;
 
@@ -16,7 +16,9 @@ export default function useUsers(
     }
     try {
       user_api.SearchForUsers(username).then((data) => {
-        setUsers(data);
+        // make sure the logged in user can't message themselves
+        const users = data.filter((user) => user.username != user_api.username);
+        setUsers(users);
       });
     } catch (e) {
       console.log(e);

@@ -1,5 +1,9 @@
 import { redirect } from "react-router-dom";
 
+export interface UserObj {
+  username: string;
+}
+
 class Api {
   // save the username of the user and
   // any authentication tokens that are needed
@@ -82,7 +86,7 @@ class Api {
 
   // searches the database for any users with the prefix
   // of the passed in username and returns a list of users
-  public async SearchForUsers(username: string): Promise<string[]> {
+  public async SearchForUsers(username: string): Promise<UserObj[]> {
     // set up the query parameters
     const url = "http://localhost:3333/user?username=" + username;
     // GET request to the backend
@@ -142,6 +146,10 @@ class Api {
           throw new Error("An unknown error occurred");
       }
     }
+  }
+
+  public get username(): string {
+    return this._username;
   }
 
   public static get User(): Api | null {

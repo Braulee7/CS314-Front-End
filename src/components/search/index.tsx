@@ -2,14 +2,14 @@ import React from "react";
 import useUsers from "../../hooks/useUsers";
 import UserLi from "../user-li";
 import { useNavigate, useLoaderData } from "react-router-dom";
-import Api from "../../api";
+import Api, { UserObj } from "../../api";
 
 function Search() {
   const { user } = useLoaderData() as { user: Api };
   const [username, setUsername, users]: [
     string,
     React.Dispatch<React.SetStateAction<string>>,
-    string[]
+    UserObj[]
   ] = useUsers(user);
   const nav = useNavigate();
 
