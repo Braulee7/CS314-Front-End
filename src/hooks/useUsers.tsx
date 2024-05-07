@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
-import { SearchForUsers } from "../api/user";
+import Api from "../api";
 
-export default function useUsers(): [
-  string,
-  React.Dispatch<React.SetStateAction<string>>,
-  string[]
-] {
+export default function useUsers(
+  user: Api
+): [string, React.Dispatch<React.SetStateAction<string>>, string[]] {
   const [users, setUsers] = useState<string[]>([]);
   const [username, setUsername] = useState("");
+  const user_api = user;
 
   useEffect(() => {
     // clear the users list
@@ -16,7 +15,7 @@ export default function useUsers(): [
       return;
     }
     try {
-      SearchForUsers(username).then((data) => {
+      user_api.SearchForUsers(username).then((data) => {
         setUsers(data);
       });
     } catch (e) {

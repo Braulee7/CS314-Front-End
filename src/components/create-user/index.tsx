@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CreateUser } from "../../api/user";
+import Api from "../../api";
 
 interface UserCredentials {
   username: string;
@@ -29,8 +29,10 @@ function CreateUserForm() {
 
     // send request to server to create user
     try {
-      const uid = await CreateUser(credentials.username, credentials.password);
-      console.log(`User created with id: ${uid}`);
+      const api = await Api.CreateUser(
+        credentials.username,
+        credentials.password
+      );
       // clear error message
       setErrorMessage("");
       // redirect to home page and sign user in

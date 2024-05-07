@@ -1,15 +1,17 @@
 import React from "react";
 import useUsers from "../../hooks/useUsers";
 import UserLi from "../user-li";
-import { checkRoomExists } from "../../api/room";
-import { redirect } from "react-router-dom";
+import { useNavigate, useLoaderData } from "react-router-dom";
+import Api from "../../api";
 
 function Search() {
+  const { user } = useLoaderData() as { user: Api };
   const [username, setUsername, users]: [
     string,
     React.Dispatch<React.SetStateAction<string>>,
     string[]
-  ] = useUsers();
+  ] = useUsers(user);
+  const nav = useNavigate();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -19,13 +21,13 @@ function Search() {
 
   const message = async (username: string) => {
     try {
-      const roomid = await checkRoomExists(username);
+      const roomid = await user.CheckRoomExists(username);
       if (roomid === -1) {
         // create a new room and redirect to it
         // TODO: create a new room
         console.log("room does not exist");
       } else {
-        redirect(`/rooms/${roomid}`);
+        nav(`/rooms/${roomid}`);
       }
     } catch (e) {}
   };
