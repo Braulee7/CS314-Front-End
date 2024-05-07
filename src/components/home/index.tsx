@@ -1,11 +1,11 @@
+import { Outlet } from "react-router-dom";
 import Navbar from "../navbar";
-import ChatRoom from "../chat-room";
 
 function Home() {
   return (
     <div className="flex justify-between">
       <Navbar />
-      <ChatRoom />
+      <Outlet />
     </div>
   );
 }
