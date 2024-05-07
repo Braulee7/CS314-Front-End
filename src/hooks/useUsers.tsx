@@ -1,7 +1,11 @@
 import { useState, useEffect } from "react";
 import { SearchForUsers } from "../api/user";
 
-export default function useUsers() {
+export default function useUsers(): [
+  string,
+  React.Dispatch<React.SetStateAction<string>>,
+  string[]
+] {
   const [users, setUsers] = useState<string[]>([]);
   const [username, setUsername] = useState("");
 
