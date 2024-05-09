@@ -39,17 +39,18 @@ class Api {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify(user),
     });
 
     // Check status of response
     if (response.ok) {
+      // see what the cookies were set to
       const json = await response.json();
       this._instance = new Api(json.username, json.accessToken);
       return this._instance;
     } else {
       // propogate the correct error message on failure
-      console.log(response.status);
       switch (response.status) {
         case 401:
           throw new Error(
@@ -81,6 +82,7 @@ class Api {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify(user),
     });
 
@@ -92,7 +94,6 @@ class Api {
       return this._instance;
     } else {
       // propogate the correct error message on failure
-      console.log(response.status);
       switch (response.status) {
         case 400:
           throw new Error(
@@ -140,7 +141,6 @@ class Api {
       return users;
     } else {
       // propogate the correct error message on failure
-      console.log(response.status);
       switch (response.status) {
         case 400:
           throw new Error("Request failed, please try again later");
@@ -174,7 +174,6 @@ class Api {
       return data.room_id;
     } else {
       // propogate the correct error message on failure
-      console.log(response.status);
       switch (response.status) {
         case 400:
           // room does not exist return -1
@@ -260,17 +259,15 @@ class Api {
 }
 
 // loader to check if a user is logged in
-export function loader() {
+export async function loader() {
   // get the instance of the user
   let user = Api.User;
   if (!user) {
     // attempt to get new tokens via refresh token in cookies
     try {
-      Api.Refresh().then((api) => {
-        user = api;
-      });
+      user = await Api.Refresh();
     } catch (e) {
-      // unauthorized, redirect to login
+      console.error(e);
       return redirect("/login");
     }
   }
