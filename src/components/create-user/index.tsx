@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Api from "../../api";
 
 interface UserCredentials {
@@ -13,6 +14,7 @@ function CreateUserForm() {
     password: "",
     confirm_password: "",
   });
+  const navigate = useNavigate();
 
   const [errorMessage, setErrorMessage] = useState<string>("");
 
@@ -36,6 +38,7 @@ function CreateUserForm() {
       // clear error message
       setErrorMessage("");
       // redirect to home page and sign user in
+      navigate("/");
     } catch (error) {
       // cast the error to correct type since catch needs
       // to be of type any
