@@ -58,6 +58,7 @@ function CreateUserForm() {
               Username:
             </label>
             <input
+              data-testid="username-input"
               type="text"
               id="username"
               name="username"
@@ -74,6 +75,7 @@ function CreateUserForm() {
               Password:
             </label>
             <input
+              data-testid="password-input"
               type="password"
               id="password"
               name="password"
@@ -90,6 +92,7 @@ function CreateUserForm() {
               Confirm Password:
             </label>
             <input
+              data-testid="confirm-password-input"
               type="password"
               id="confirm-password"
               name="confirm-password"
@@ -105,6 +108,7 @@ function CreateUserForm() {
             />
           </div>
           <button
+            data-testid="submit-button"
             type="submit"
             className="w-full text-lg rounded border hover:bg-blue-300"
           >
