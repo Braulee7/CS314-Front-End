@@ -1,6 +1,6 @@
+import Api from "../../api";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Api from "../../api";
 
 interface UserCredentials {
   username: string;
@@ -22,7 +22,6 @@ function Login() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     //pevents the default submission
     event.preventDefault();
-
     //confirm both are entered
     if (!credentials.username || !credentials.password) {
       setErrorMessage("Please enter both username and password.");
@@ -33,7 +32,6 @@ function Login() {
     try {
       const api = await Api.Login(credentials.username, credentials.password);
       setErrorMessage("");
-      console.log("Logged in");
       // redirect to home page
       navigate("/");
     } catch (error) {
@@ -60,6 +58,7 @@ function Login() {
                 Username:
               </label>
               <input
+                data-testid="username-input"
                 type="text"
                 id="username"
                 name="username"
@@ -75,6 +74,7 @@ function Login() {
                 Password:
               </label>
               <input
+                data-testid="password-input"
                 type="password"
                 id="password"
                 name="password"
@@ -85,6 +85,7 @@ function Login() {
               />
             </div>
             <button
+              data-testid="submit-button"
               type="submit"
               className="w-full text-lg rounded border hover:bg-blue-300"
             >
