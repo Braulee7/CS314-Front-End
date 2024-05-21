@@ -157,7 +157,7 @@ class Api {
   // @return {Promise<number>}: the room id if it exists, -1 otherwise
   public async CheckRoomExists(other_user: string): Promise<number> {
     // set up url
-    const url = `http://localhost:3333/room?user1=${this._username}&user2=${other_user}`;
+    const url = `http://localhost:3333/room/exists?user1=${this._username}&user2=${other_user}`;
     // GET request to the backend
     const response = await fetch(url, {
       method: "GET",
