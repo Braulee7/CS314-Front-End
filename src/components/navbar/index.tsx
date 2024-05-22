@@ -1,9 +1,13 @@
 import { useState, useEffect } from "react";
+import { useLoaderData } from "react-router-dom";
 import Search from "../search";
+import RoomList from "../room-list";
+import Api from "../../api";
 
 function Navbar() {
   const [show, setShow] = useState(false);
   const [screen_width, setScreenWidth] = useState(window.innerWidth);
+  const { user } = useLoaderData() as { user: Api };
 
   useEffect(() => {
     const handleResize = () => {
@@ -25,10 +29,8 @@ function Navbar() {
           <Search />
           <h1>Create Group</h1>
           <br />
-          <ul>
-            <li>room1</li>
-            <li>room2</li>
-          </ul>
+          <RoomList user={user} />
+          <h1>Sign out</h1>
         </div>
       )}
     </div>

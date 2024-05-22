@@ -152,6 +152,31 @@ class Api {
     }
   }
 
+  public async getAllRooms(): Promise<number[]> {
+    const response = await fetch("http://localhost:3333/room", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.AccessToken,
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+      return data;
+    } else {
+      switch (response.status) {
+        case 406:
+          throw new Error("Unauthorised user please log back in");
+        case 500:
+          throw new Error("Internal server error, please try again later");
+        default:
+          throw new Error("An unknown error occurred");
+      }
+    }
+  }
+
   // checks if a room exists between the current logged in user and the other user
   // @param other_user {string}: the other user to check if a room exists
   // @return {Promise<number>}: the room id if it exists, -1 otherwise
