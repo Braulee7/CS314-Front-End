@@ -272,6 +272,30 @@ class Api {
     }
   }
 
+  public async sendMessage(room_id: number, message: string): Promise<void> {
+    const url = "http://localhost:3333/message";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.AccessToken,
+      },
+      body: JSON.stringify({ room_id: room_id, message: message }),
+    });
+    // resolve promise
+    if (response.ok) {
+      return;
+    }
+    switch (response.status) {
+      case 400:
+        throw new Error("Request failed, please try again later");
+      case 500:
+        throw new Error("Internal server error, please try again later");
+      default:
+        throw new Error("An unknown error occurred");
+    }
+  }
+
   // getter function to retrieve the username of the currently
   // logged in user
   // @return {string}: the username of the user
