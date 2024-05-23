@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 import Search from "../search";
 
 function Navbar() {
@@ -12,6 +13,19 @@ function Navbar() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   });
+
+
+  //All this does is send you back to home right now. Need to set up other systems before I can really get this working
+  const handleLogout = async() => {
+    const navigate = useNavigate();
+    const response = await fetch('/logout', { method: 'POST'});
+    if(response.ok) {
+      console.log("User logged out");
+      navigate("/");
+    }
+  };
+
+
   return (
     <div className="flex flex-col justify-between h-screen w-[10vw] bg-gray-500">
       <button
@@ -29,6 +43,7 @@ function Navbar() {
             <li>room1</li>
             <li>room2</li>
           </ul>
+          <button onClick={handleLogout} className="mt-4 bg-red-500 text-white p-2 rounded">Logout</button>
         </div>
       )}
     </div>
