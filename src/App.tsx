@@ -1,6 +1,6 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { loader as userLoader } from "./api";
+import { authenticateUserLoader as userLoader, getRoomLoader } from "./api";
 import Home from "./components/home";
 import Login from "./components/login";
 import ChatRoom from "./components/chat-room";
@@ -12,7 +12,7 @@ const router = createBrowserRouter([
     loader: userLoader,
     children: [
       {
-        loader: userLoader,
+        loader: getRoomLoader,
         path: "rooms/:roomId",
         element: <ChatRoom />,
       },

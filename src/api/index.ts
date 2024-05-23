@@ -20,6 +20,10 @@ interface ApiObj {
   accessToken: string;
 }
 
+interface RoomLoaderParams {
+  roomId?: string;
+}
+
 // SINGLETON CLASS
 // API class will handle all fetching for the user. It will
 // contain the authenticating information (usrname and JWT access
@@ -159,6 +163,31 @@ class Api {
     }
   }
 
+  public async memberOfRoom(room_id: number): Promise<boolean> {
+    const url = `http://localhost:3333/room/members?room_id=${room_id}`;
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.AccessToken,
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data.includes(this._username);
+    } else {
+      switch (response.status) {
+        case 400:
+          throw new Error("Request failed, please try again later");
+        case 500:
+          throw new Error("Internal server error, please try again later");
+        default:
+          throw new Error("An unknown error occurred");
+      }
+    }
+  }
+
   public async createDirectMessageRoom(other_user: string): Promise<number> {
     const url = "http://localhost:3333/room";
     const response = await fetch(url, {
@@ -196,7 +225,6 @@ class Api {
 
     if (response.ok) {
       const data = await response.json();
-      console.log(data);
       return data;
     } else {
       switch (response.status) {
@@ -317,7 +345,7 @@ class Api {
 }
 
 // loader to check if a user is logged in
-export async function loader() {
+export async function authenticateUserLoader() {
   // get the instance of the user
   let user = Api.User;
   if (!user) {
@@ -330,6 +358,33 @@ export async function loader() {
     }
   }
   return { user };
+}
+
+export async function getRoomLoader({ params }: { params: RoomLoaderParams }) {
+  const result = await authenticateUserLoader();
+  if (result instanceof Response) {
+    return result;
+  }
+  const { user } = result;
+  // get the room id from the param
+  const room_id: number | undefined = params.roomId
+    ? parseInt(params.roomId, 10)
+    : undefined;
+  if (!room_id) {
+    return redirect("/");
+  }
+
+  // verify that the user is a member of this room
+  try {
+    const is_member = await user.memberOfRoom(room_id);
+    if (!is_member) {
+      return redirect("/");
+    }
+
+    return [user, params.roomId];
+  } catch (e) {
+    return redirect("/");
+  }
 }
 
 export default Api;
