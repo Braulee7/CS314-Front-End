@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import Api from "../api";
+import Api, { RoomObj } from "../api";
 
 export default function (user: Api) {
-  const [rooms, setRooms] = useState<number[]>([]);
+  const [rooms, setRooms] = useState<RoomObj[]>([]);
 
   useEffect(() => {
     user

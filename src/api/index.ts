@@ -7,6 +7,13 @@ export interface UserObj {
   username: string;
 }
 
+// interface of what the backend
+// returns for a room
+export interface RoomObj {
+  room_id: number;
+  room_name: string;
+}
+
 // interace for data held by our API class
 interface ApiObj {
   username: string;
@@ -152,7 +159,7 @@ class Api {
     }
   }
 
-  public async getAllRooms(): Promise<number[]> {
+  public async getAllRooms(): Promise<RoomObj[]> {
     const response = await fetch("http://localhost:3333/room", {
       method: "GET",
       headers: {

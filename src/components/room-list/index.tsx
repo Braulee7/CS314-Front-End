@@ -11,12 +11,12 @@ function RoomList(props: RoomListProps) {
 
   return (
     <ul className="h-[75%] rounded-md overflow-y-auto bg-gray-800 text-white w-64">
-      {rooms.map((room_id) => (
+      {rooms.map(({ room_id, room_name }) => (
         <li
           key={room_id}
           className="px-6 py-2 border-b border-gray-700 cursor-pointer hover:bg-gray-600"
         >
-          <Link to={`/rooms/${room_id}`}>{room_id}</Link>
+          <Link to={`/rooms/${room_id}`}>{room_name}</Link>
         </li>
       ))}
     </ul>
