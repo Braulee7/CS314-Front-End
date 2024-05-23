@@ -159,6 +159,32 @@ class Api {
     }
   }
 
+  public async createDirectMessageRoom(other_user: string): Promise<number> {
+    const url = "http://localhost:3333/room";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.AccessToken,
+      },
+      body: JSON.stringify({ other_user: other_user }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data.room_id;
+    } else {
+      switch (response.status) {
+        case 406:
+          throw new Error("Unauthorised user please log back in");
+        case 500:
+          throw new Error("Internal server error, please try again later");
+        default:
+          throw new Error("An unknown error occurred");
+      }
+    }
+  }
+
   public async getAllRooms(): Promise<RoomObj[]> {
     const response = await fetch("http://localhost:3333/room", {
       method: "GET",
