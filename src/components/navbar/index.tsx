@@ -15,7 +15,7 @@ function Navbar() {
   });
 
 
-  //All this does is send you back to home right now. Need to set up other systems before I can really get this working
+  //Sends you back to the home page on log out
   const handleLogout = async() => {
     const navigate = useNavigate();
     const response = await fetch('/logout', { method: 'POST'});

@@ -250,9 +250,27 @@ class Api {
     return this._accessToken;
   }
 
+  // Starts a logout request to the server, and invalidates the current instance
+  // @return {Promise<void>}: To identify when it is done.
+  public static async logout(): Promise<void> {
+    const response = await fetch('/logout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+  
+    if (!response.ok) {
+      throw new Error('Logout failed');
+    }
+  
+    this._instance = null;
+  }
+
   // DATA MEMBERS
   // static instance of the user, the singleton
-  private static _instance: Api;
+  //In order to be set to null, api needs to be able to be type null.
+  private static _instance: Api | null = null;
   // username and access token of the user
   private _username: string;
   private _accessToken: string;
