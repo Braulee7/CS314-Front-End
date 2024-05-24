@@ -13,8 +13,10 @@ function Message(props: MessageProps) {
           {sender}
         </div>
       </span>
-      <span className="absolute top-0 left-0 hidden text-xs text-gray-500 group-hover:block">
-        {timestamp}
+      <span>
+        <div className="absolute translate-y-1 hidden bg-teal-950 p-2 rounded-md text-xs text-gray-200 group-hover:block">
+          {timestamp}
+        </div>
       </span>
       <span>
         <div className="text-white w-full bg-red ">{content}</div>

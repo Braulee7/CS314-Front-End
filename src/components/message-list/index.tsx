@@ -13,7 +13,7 @@ function MessageList(props: MessageListProps) {
   console.log(messages);
   return (
     <div className="h-[95vh]">
-      <ul>
+      <ul className="flex flex-col overflow-y-scroll scrollbar ">
         {messages.map((message) => (
           <li key={message.message_id}>
             <Message

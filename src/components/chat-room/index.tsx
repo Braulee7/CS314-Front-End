@@ -8,7 +8,7 @@ function ChatRoom() {
 
   return (
     <>
-      <div className="w-[90%] lg:w-[76vw] bg-gray-900 bg-opacity-75 backdrop-blur-lg rounded  z-10">
+      <div className="w-[90vw] lg:w-[86vw] flex flex-col bg-gray-900 bg-opacity-75 backdrop-blur-lg rounded  z-10">
         <MessageList user={user} room_id={room_id} />
         <MessageInput user={user} room_id={room_id} />
       </div>

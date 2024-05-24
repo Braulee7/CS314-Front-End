@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* code from https://stackoverflow.com/questions/69400560/how-to-change-scrollbar-when-using-tailwind-next-js-react#:~:text=60-,Tailwind%20CSS,-doesn%27t%20provide%20a*/
+@layer utilities {
+  .scrollbar::-webkit-scrollbar {
+    width: 10px;
+    height: 20px;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: #f7f4ed;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: #e0cbcb;
+    border-radius: 100vh;
+    border: 3px solid #f6f7ed;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #c0a0b9;
+  }
+}

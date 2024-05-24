@@ -10,7 +10,7 @@ function RoomList(props: RoomListProps) {
   const [rooms] = useRooms(props.user);
 
   return (
-    <ul className="h-[75%] rounded-md overflow-y-auto bg-gray-800 text-white w-64">
+    <ul className="h-[75%] rounded-md bg-gray-800 text-white w-[100%] max-w-64 overflow-y-scroll scrollbar">
       {rooms.map(({ room_id, room_name }) => (
         <li
           key={room_id}
