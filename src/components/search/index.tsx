@@ -21,15 +21,16 @@ function Search() {
 
   const message = async (username: string) => {
     try {
-      const roomid = await user.CheckRoomExists(username);
-      if (roomid === -1) {
+      let room_id = await user.CheckRoomExists(username);
+      if (room_id === -1) {
         // create a new room and redirect to it
-        // TODO: create a new room
-        console.log("room does not exist");
-      } else {
-        nav(`/rooms/${roomid}`);
+        room_id = await user.createDirectMessageRoom(username);
       }
-    } catch (e) {}
+      nav(`/rooms/${room_id}`);
+    } catch (e) {
+      // TODO: Add error message to UI
+      console.log(e);
+    }
   };
 
   return (

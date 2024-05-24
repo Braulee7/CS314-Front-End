@@ -7,10 +7,27 @@ export interface UserObj {
   username: string;
 }
 
+// interface of what the backend
+// returns for a room
+export interface RoomObj {
+  room_id: number;
+  room_name: string;
+}
+export interface MessageObj {
+  message_id: number;
+  message: string;
+  date_sent: string;
+  sending_user: string;
+}
+
 // interace for data held by our API class
 interface ApiObj {
   username: string;
   accessToken: string;
+}
+
+interface RoomLoaderParams {
+  roomId?: string;
 }
 
 // SINGLETON CLASS
@@ -152,12 +169,87 @@ class Api {
     }
   }
 
+  public async memberOfRoom(room_id: number): Promise<boolean> {
+    const url = `http://localhost:3333/room/members?room_id=${room_id}`;
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.AccessToken,
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data.includes(this._username);
+    } else {
+      switch (response.status) {
+        case 400:
+          throw new Error("Request failed, please try again later");
+        case 500:
+          throw new Error("Internal server error, please try again later");
+        default:
+          throw new Error("An unknown error occurred");
+      }
+    }
+  }
+
+  public async createDirectMessageRoom(other_user: string): Promise<number> {
+    const url = "http://localhost:3333/room";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.AccessToken,
+      },
+      body: JSON.stringify({ other_user: other_user }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data.room_id;
+    } else {
+      switch (response.status) {
+        case 406:
+          throw new Error("Unauthorised user please log back in");
+        case 500:
+          throw new Error("Internal server error, please try again later");
+        default:
+          throw new Error("An unknown error occurred");
+      }
+    }
+  }
+
+  public async getAllRooms(): Promise<RoomObj[]> {
+    const response = await fetch("http://localhost:3333/room", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.AccessToken,
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      switch (response.status) {
+        case 406:
+          throw new Error("Unauthorised user please log back in");
+        case 500:
+          throw new Error("Internal server error, please try again later");
+        default:
+          throw new Error("An unknown error occurred");
+      }
+    }
+  }
+
   // checks if a room exists between the current logged in user and the other user
   // @param other_user {string}: the other user to check if a room exists
   // @return {Promise<number>}: the room id if it exists, -1 otherwise
   public async CheckRoomExists(other_user: string): Promise<number> {
     // set up url
-    const url = `http://localhost:3333/room?user1=${this._username}&user2=${other_user}`;
+    const url = `http://localhost:3333/room/exists?user1=${this._username}&user2=${other_user}`;
     // GET request to the backend
     const response = await fetch(url, {
       method: "GET",
@@ -178,6 +270,55 @@ class Api {
         case 400:
           // room does not exist return -1
           return -1;
+        case 500:
+          throw new Error("Internal server error, please try again later");
+        default:
+          throw new Error("An unknown error occurred");
+      }
+    }
+  }
+
+  public async sendMessage(room_id: number, message: string): Promise<void> {
+    const url = "http://localhost:3333/message";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.AccessToken,
+      },
+      body: JSON.stringify({ room_id: room_id, message: message }),
+    });
+    // resolve promise
+    if (response.ok) {
+      return;
+    }
+    switch (response.status) {
+      case 400:
+        throw new Error("Request failed, please try again later");
+      case 500:
+        throw new Error("Internal server error, please try again later");
+      default:
+        throw new Error("An unknown error occurred");
+    }
+  }
+
+  public async getMessages(room_id: number): Promise<MessageObj[]> {
+    const url = `http://localhost:3333/message?room_id=${room_id}`;
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.AccessToken,
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data.messages;
+    } else {
+      switch (response.status) {
+        case 400:
+          throw new Error("Request failed, please try again later");
         case 500:
           throw new Error("Internal server error, please try again later");
         default:
@@ -259,7 +400,7 @@ class Api {
 }
 
 // loader to check if a user is logged in
-export async function loader() {
+export async function authenticateUserLoader() {
   // get the instance of the user
   let user = Api.User;
   if (!user) {
@@ -272,6 +413,33 @@ export async function loader() {
     }
   }
   return { user };
+}
+
+export async function getRoomLoader({ params }: { params: RoomLoaderParams }) {
+  const result = await authenticateUserLoader();
+  if (result instanceof Response) {
+    return result;
+  }
+  const { user } = result;
+  // get the room id from the param
+  const room_id: number | undefined = params.roomId
+    ? parseInt(params.roomId, 10)
+    : undefined;
+  if (!room_id) {
+    return redirect("/");
+  }
+
+  // verify that the user is a member of this room
+  try {
+    const is_member = await user.memberOfRoom(room_id);
+    if (!is_member) {
+      return redirect("/");
+    }
+
+    return [user, params.roomId];
+  } catch (e) {
+    return redirect("/");
+  }
 }
 
 export default Api;
