@@ -13,6 +13,12 @@ export interface RoomObj {
   room_id: number;
   room_name: string;
 }
+export interface MessageObj {
+  message_id: number;
+  message: string;
+  date_sent: string;
+  sending_user: string;
+}
 
 // interace for data held by our API class
 interface ApiObj {
@@ -293,6 +299,31 @@ class Api {
         throw new Error("Internal server error, please try again later");
       default:
         throw new Error("An unknown error occurred");
+    }
+  }
+
+  public async getMessages(room_id: number): Promise<MessageObj[]> {
+    const url = `http://localhost:3333/message?room_id=${room_id}`;
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.AccessToken,
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data.messages;
+    } else {
+      switch (response.status) {
+        case 400:
+          throw new Error("Request failed, please try again later");
+        case 500:
+          throw new Error("Internal server error, please try again later");
+        default:
+          throw new Error("An unknown error occurred");
+      }
     }
   }
 

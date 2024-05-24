@@ -23,7 +23,7 @@ function MessageInput(props: MessageInputProps) {
 
   return (
     <>
-      <div className="flex items-center justify-center ">
+      <div className="flex items-center justify-center h-[5vh]">
         <form className="w-full max-w-sm" onSubmit={sendMessage}>
           <div className="flex items-center ">
             <input
