@@ -2,9 +2,22 @@ import { useLoaderData } from "react-router-dom";
 import MessageInput from "../message-input";
 import Api from "../../util/api";
 import MessageList from "../message-list";
+import Socket from "../../util/socket";
+import { useEffect, useRef } from "react";
 
 function ChatRoom() {
   const [user, room_id] = useLoaderData() as [Api, number];
+  // lines 11-20 from Microsoft Copilot :)
+  const socketRef = useRef<Socket | null>(null);
+  useEffect(() => {
+    socketRef.current = new Socket(user.AccessToken, room_id);
+
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.close();
+      }
+    };
+  }, [user, room_id]);
 
   return (
     <>
