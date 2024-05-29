@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 import Search from "../search";
 import RoomList from "../room-list";
+import Logout from "../logout";
 import Api from "../../api";
-const screen_width_threshold = 1080;
+
 function Navbar() {
   const [show, setShow] = useState(false);
   const [screen_width, setScreenWidth] = useState(window.innerWidth);
   const { user } = useLoaderData() as { user: Api };
+  const screen_width_threshold = 1080;
 
   useEffect(() => {
     const handleResize = () => {
@@ -16,18 +18,6 @@ function Navbar() {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   });
-
-
-  //Sends you back to the home page on log out
-  const handleLogout = async() => {
-    const navigate = useNavigate();
-    const response = await fetch('/logout', { method: 'POST'});
-    if(response.ok) {
-      console.log("User logged out");
-      navigate("/");
-    }
-  };
-
 
   return (
     <div className="flex flex-col justify-between h-screen w-full max-w-[25vw] lg:max-w-[300px] bg-gray-500">
@@ -45,7 +35,7 @@ function Navbar() {
           <h1>Create Group</h1>
           <br />
           <RoomList user={user} />
-          <button onClick={handleLogout} className="mt-4 bg-red-500 text-white p-2 rounded">Logout</button>
+          <Logout />
         </div>
       )}
     </div>

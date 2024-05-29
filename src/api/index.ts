@@ -339,9 +339,6 @@ class Api {
   // @return {Api | null}: the instance of the user API if a user is
   //  logged in, null otherwise
   public static get User(): Api | null {
-    if (!this._instance) {
-      return null;
-    }
     return this._instance;
   }
 
@@ -394,17 +391,18 @@ class Api {
   // Starts a logout request to the server, and invalidates the current instance
   // @return {Promise<void>}: To identify when it is done.
   public static async logout(): Promise<void> {
-    const response = await fetch('/logout', {
-      method: 'POST',
+    const response = await fetch("http://localhost:3333/auth/logout", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
-      }
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
     });
-  
+
     if (!response.ok) {
-      throw new Error('Logout failed');
+      throw new Error("Logout failed");
     }
-  
+
     this._instance = null;
   }
 
