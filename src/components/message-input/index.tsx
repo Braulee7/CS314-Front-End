@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Api from "../../api";
+import Api from "../../util/api";
 
 interface MessageInputProps {
   user: Api;

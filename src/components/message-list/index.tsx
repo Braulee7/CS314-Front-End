@@ -1,4 +1,4 @@
-import Api, { MessageObj } from "../../api";
+import Api, { MessageObj } from "../../util/api";
 import Message from "../message";
 import useMessages from "../../hooks/useMessages";
 

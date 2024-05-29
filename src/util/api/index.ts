@@ -371,7 +371,7 @@ class Api {
 
   // checks if the access token is expired and returns a valid token
   // @return {string}: a valid access token
-  private get AccessToken(): string {
+  public get AccessToken(): string {
     // check expiration
     const decoded_token: JwtPayload = jwtDecode(this._accessToken);
     const expiration_date =

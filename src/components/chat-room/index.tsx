@@ -1,6 +1,6 @@
 import { useLoaderData } from "react-router-dom";
 import MessageInput from "../message-input";
-import Api from "../../api";
+import Api from "../../util/api";
 import MessageList from "../message-list";
 
 function ChatRoom() {

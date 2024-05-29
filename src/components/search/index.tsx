@@ -2,7 +2,7 @@ import React from "react";
 import useUsers from "../../hooks/useUsers";
 import UserLi from "../user-li";
 import { useNavigate, useLoaderData } from "react-router-dom";
-import Api, { UserObj } from "../../api";
+import Api, { UserObj } from "../../util/api";
 
 function Search() {
   const { user } = useLoaderData() as { user: Api };

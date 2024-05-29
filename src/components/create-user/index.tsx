@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Api from "../../api";
+import Api from "../../util/api";
 
 interface UserCredentials {
   username: string;

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Api, { MessageObj } from "../api";
+import Api, { MessageObj } from "../util/api";
 
 export default function (user: Api, room_id: number) {
   const [messages, setMessages] = useState<MessageObj[]>([]);

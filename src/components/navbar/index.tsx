@@ -3,7 +3,7 @@ import { useLoaderData } from "react-router-dom";
 import Search from "../search";
 import RoomList from "../room-list";
 import Logout from "../logout";
-import Api from "../../api";
+import Api from "../../util/api";
 
 function Navbar() {
   const [show, setShow] = useState(false);
