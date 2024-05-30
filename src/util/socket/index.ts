@@ -1,6 +1,7 @@
 import { Socket, io } from "socket.io-client";
 import { MessageObj } from "../api";
 
+type MessageUpdater = (message: MessageObj) => void;
 export default class {
   constructor(authentication_token: string, room_id: number) {
     const url = `http://localhost:3333`;
@@ -10,14 +11,12 @@ export default class {
     });
   }
 
-  sendMessage(message: MessageObj) {
+  emitMessage(message: MessageObj) {
     this.socket.emit("send message", message);
   }
 
-  registerMessageReceiver(updateMessages: (message: MessageObj) => void) {
-    console.log("Registering a receiver");
+  registerMessageReceiver(updateMessages: MessageUpdater) {
     this.socket.on("receive message", (message_obj: MessageObj) => {
-      console.log("received message: ", message_obj);
       updateMessages(message_obj);
     });
   }

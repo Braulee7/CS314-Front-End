@@ -1,24 +1,21 @@
-import { useState, forwardRef } from "react";
+import { useState, useContext } from "react";
 import Api from "../../util/api";
-import Socket from "../../util/socket";
+import { WebSocketContext } from "../../context/socket-context";
 interface MessageInputProps {
   user: Api;
   room_id: number;
 }
-
-const MessageInput = forwardRef<Socket, MessageInputProps>(function (
-  props,
-  ref: React.Ref<Socket>
-) {
+function MessageInput(props: MessageInputProps) {
   const { user, room_id } = props;
   const [message, setMessage] = useState<string>("");
+  const { emitMessage } = useContext(WebSocketContext);
 
-  const sendMessage = async (e: React.FormEvent) => {
+  const handleMessageSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (message.trim() === "") return;
     try {
       const message_obj = await user.sendMessage(room_id, message);
-      ref?.current.sendMessage(message_obj);
+      emitMessage(message_obj);
       setMessage("");
     } catch (error) {
       console.error("Error sending message", error);
@@ -28,7 +25,7 @@ const MessageInput = forwardRef<Socket, MessageInputProps>(function (
   return (
     <>
       <div className="flex items-center justify-center h-[5vh] w-[100%] bg-cyan-800">
-        <form className="w-full " onSubmit={sendMessage}>
+        <form className="w-full " onSubmit={handleMessageSubmit}>
           <div className="flex items-center ">
             <input
               data-testid="message-input"
@@ -49,6 +46,6 @@ const MessageInput = forwardRef<Socket, MessageInputProps>(function (
       </div>
     </>
   );
-});
+}
 
 export default MessageInput;

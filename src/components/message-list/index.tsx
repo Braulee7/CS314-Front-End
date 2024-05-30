@@ -1,26 +1,9 @@
-import { forwardRef, useEffect } from "react";
-import Api, { MessageObj } from "../../util/api";
+import { useContext } from "react";
 import Message from "../message";
-import Socket from "../../util/socket";
-import useMessages from "../../hooks/useMessages";
+import { WebSocketContext } from "../../context/socket-context";
 
-interface MessageListProps {
-  user: Api;
-  room_id: number;
-}
-
-const MessageList = forwardRef<Socket, MessageListProps>(function (props, ref) {
-  const { user, room_id } = props;
-  const { messages, setMessages } = useMessages(user, room_id);
-
-  useEffect(() => {
-    const updateMessages = (new_message: MessageObj) => {
-      setMessages((prev_messages) => [...prev_messages, new_message]);
-    };
-    if (ref?.current) {
-      ref?.current.registerMessageReceiver(updateMessages);
-    }
-  }, [ref]);
+function MessageList() {
+  const { messages } = useContext(WebSocketContext);
 
   return (
     <div className="h-[95vh]">
@@ -37,6 +20,6 @@ const MessageList = forwardRef<Socket, MessageListProps>(function (props, ref) {
       </ul>
     </div>
   );
-});
+}
 
 export default MessageList;

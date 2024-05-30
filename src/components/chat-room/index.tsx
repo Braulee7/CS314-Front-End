@@ -1,30 +1,20 @@
 import { useLoaderData } from "react-router-dom";
-import { useEffect, useRef } from "react";
 import MessageInput from "../message-input";
 import Api from "../../util/api";
 import MessageList from "../message-list";
-import Socket from "../../util/socket";
+import { WebSocketProvider } from "../../context/socket-context";
 
 function ChatRoom() {
   const [user, room_id] = useLoaderData() as [Api, number];
-  // lines 11-20 from Microsoft Copilot :)
-  const socketRef = useRef<Socket | null>(null);
-  useEffect(() => {
-    socketRef.current = new Socket(user.AccessToken, room_id);
-
-    return () => {
-      if (socketRef.current) {
-        socketRef.current.close();
-      }
-    };
-  }, [user, room_id]);
 
   return (
     <>
-      <div className="w-[90vw] lg:w-[86vw] flex flex-col bg-gray-900 bg-opacity-75 backdrop-blur-lg rounded  z-10">
-        <MessageList user={user} room_id={room_id} ref={socketRef} />
-        <MessageInput user={user} room_id={room_id} ref={socketRef} />
-      </div>
+      <WebSocketProvider user={user} room_id={room_id}>
+        <div className="w-[90vw] lg:w-[86vw] flex flex-col bg-gray-900 bg-opacity-75 backdrop-blur-lg rounded  z-10">
+          <MessageList />
+          <MessageInput user={user} room_id={room_id} />
+        </div>
+      </WebSocketProvider>
     </>
   );
 }
