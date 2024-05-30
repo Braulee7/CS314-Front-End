@@ -1,5 +1,7 @@
+import { forwardRef, useEffect } from "react";
 import Api, { MessageObj } from "../../util/api";
 import Message from "../message";
+import Socket from "../../util/socket";
 import useMessages from "../../hooks/useMessages";
 
 interface MessageListProps {
@@ -7,10 +9,19 @@ interface MessageListProps {
   room_id: number;
 }
 
-function MessageList(props: MessageListProps) {
+const MessageList = forwardRef<Socket, MessageListProps>(function (props, ref) {
   const { user, room_id } = props;
-  const messages: MessageObj[] = useMessages(user, room_id);
-  console.log(messages);
+  const { messages, setMessages } = useMessages(user, room_id);
+
+  useEffect(() => {
+    const updateMessages = (new_message: MessageObj) => {
+      setMessages((prev_messages) => [...prev_messages, new_message]);
+    };
+    if (ref?.current) {
+      ref?.current.registerMessageReceiver(updateMessages);
+    }
+  }, [ref]);
+
   return (
     <div className="h-[95vh]">
       <ul className="flex flex-col overflow-y-scroll scrollbar ">
@@ -26,6 +37,6 @@ function MessageList(props: MessageListProps) {
       </ul>
     </div>
   );
-}
+});
 
 export default MessageList;

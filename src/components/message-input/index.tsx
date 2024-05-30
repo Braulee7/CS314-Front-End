@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { useState, forwardRef } from "react";
 import Api from "../../util/api";
-
+import Socket from "../../util/socket";
 interface MessageInputProps {
   user: Api;
   room_id: number;
 }
 
-function MessageInput(props: MessageInputProps) {
+const MessageInput = forwardRef<Socket, MessageInputProps>(function (
+  props,
+  ref: React.Ref<Socket>
+) {
   const { user, room_id } = props;
   const [message, setMessage] = useState<string>("");
 
@@ -14,7 +17,8 @@ function MessageInput(props: MessageInputProps) {
     e.preventDefault();
     if (message.trim() === "") return;
     try {
-      await user.sendMessage(room_id, message);
+      const message_obj = await user.sendMessage(room_id, message);
+      ref?.current.sendMessage(message_obj);
       setMessage("");
     } catch (error) {
       console.error("Error sending message", error);
@@ -45,6 +49,6 @@ function MessageInput(props: MessageInputProps) {
       </div>
     </>
   );
-}
+});
 
 export default MessageInput;

@@ -8,5 +8,5 @@ export default function (user: Api, room_id: number) {
       setMessages(messages);
     });
   }, [user, room_id]);
-  return messages;
+  return { messages, setMessages };
 }

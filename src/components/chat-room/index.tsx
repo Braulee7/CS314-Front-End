@@ -1,9 +1,9 @@
 import { useLoaderData } from "react-router-dom";
+import { useEffect, useRef } from "react";
 import MessageInput from "../message-input";
 import Api from "../../util/api";
 import MessageList from "../message-list";
 import Socket from "../../util/socket";
-import { useEffect, useRef } from "react";
 
 function ChatRoom() {
   const [user, room_id] = useLoaderData() as [Api, number];
@@ -22,8 +22,8 @@ function ChatRoom() {
   return (
     <>
       <div className="w-[90vw] lg:w-[86vw] flex flex-col bg-gray-900 bg-opacity-75 backdrop-blur-lg rounded  z-10">
-        <MessageList user={user} room_id={room_id} />
-        <MessageInput user={user} room_id={room_id} />
+        <MessageList user={user} room_id={room_id} ref={socketRef} />
+        <MessageInput user={user} room_id={room_id} ref={socketRef} />
       </div>
     </>
   );
