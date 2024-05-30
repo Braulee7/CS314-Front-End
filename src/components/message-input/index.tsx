@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Api from "../../api";
+import ErrorMessage from "../error-message";
 
 interface MessageInputProps {
   user: Api;
@@ -9,15 +10,22 @@ interface MessageInputProps {
 function MessageInput(props: MessageInputProps) {
   const { user, room_id } = props;
   const [message, setMessage] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (message.trim() === "") return;
+    if (message.trim() === "")
+      {
+        setErrorMessage("Message cannot be empty");
+        return;
+      }
     try {
       await user.sendMessage(room_id, message);
       setMessage("");
+      setErrorMessage("");
     } catch (error) {
-      console.error("Error sending message", error);
+      const e = error as Error;
+      setErrorMessage(e.message);
     }
   };
 
@@ -43,6 +51,7 @@ function MessageInput(props: MessageInputProps) {
           </div>
         </form>
       </div>
+      <ErrorMessage message={errorMessage} />
     </>
   );
 }

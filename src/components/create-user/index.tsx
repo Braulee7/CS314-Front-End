@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Api from "../../api";
+import ErrorMessage from "../error-message";
 
 interface UserCredentials {
   username: string;
@@ -115,14 +116,7 @@ function CreateUserForm() {
             Create Account
           </button>
         </form>
-        {errorMessage && (
-          <div
-            className="p-4 mt-4 rounded bg-red-500 border border-red-700 ease-in"
-            id="errorMessage"
-          >
-            <p className="text-white">{errorMessage}</p>
-          </div>
-        )}
+        <ErrorMessage message={errorMessage} />
       </div>
     </div>
   );
