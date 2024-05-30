@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Api, { UserObj } from "../api";
+import Api, { UserObj } from "../util/api";
 
 export default function useUsers(
   user: Api

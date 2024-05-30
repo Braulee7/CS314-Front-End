@@ -1,6 +1,9 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { authenticateUserLoader as userLoader, getRoomLoader } from "./api";
+import {
+  authenticateUserLoader as userLoader,
+  getRoomLoader,
+} from "./util/api";
 import Home from "./components/home";
 import Login from "./components/login";
 import ChatRoom from "./components/chat-room";

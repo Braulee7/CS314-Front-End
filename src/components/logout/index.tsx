@@ -1,7 +1,7 @@
-import { useNavigate } from "react-router-dom";
-import Api from "../../api";
-import ErrorMessage from "../error-message";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Api from "../../util/api";
+import ErrorMessage from "../error-message";
 
 function Logout() {
   const navigate = useNavigate();

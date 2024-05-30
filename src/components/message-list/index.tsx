@@ -1,21 +1,27 @@
-import Api, { MessageObj } from "../../api";
+import { useContext, useRef, useEffect } from "react";
 import Message from "../message";
-import useMessages from "../../hooks/useMessages";
+import { WebSocketContext } from "../../context/socket-context";
 
-interface MessageListProps {
-  user: Api;
-  room_id: number;
-}
+function MessageList() {
+  const { messages } = useContext(WebSocketContext);
+  const recently_sent_message_ref = useRef<HTMLLIElement>(null);
 
-function MessageList(props: MessageListProps) {
-  const { user, room_id } = props;
-  const messages: MessageObj[] = useMessages(user, room_id);
-  console.log(messages);
+  useEffect(() => {
+    if (recently_sent_message_ref.current) {
+      recently_sent_message_ref.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
   return (
-    <div className="h-[95vh]">
-      <ul className="flex flex-col overflow-y-scroll scrollbar ">
-        {messages.map((message) => (
-          <li key={message.message_id}>
+    <div className="h-[95vh] overflow-y-scroll scrollbar">
+      <ul className="flex flex-col ">
+        {messages.map((message, index) => (
+          <li
+            key={message.message_id}
+            ref={
+              index === messages.length - 1 ? recently_sent_message_ref : null
+            }
+          >
             <Message
               content={message.message}
               sender={message.sending_user}

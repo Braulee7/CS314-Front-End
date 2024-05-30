@@ -1,7 +1,7 @@
 import { userEvent } from "@testing-library/user-event";
 import { render } from "@testing-library/react";
 import { useNavigate } from "react-router-dom";
-import Api from "../../api";
+import Api from "../../util/api";
 import CreateUserForm from "./index";
 
 // Mock the navigate function to ensure the test

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import Api from "../../api";
+import Api from "../../util/api";
 import useRooms from "../../hooks/useRooms";
 
 interface RoomListProps {
