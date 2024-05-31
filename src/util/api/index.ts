@@ -410,6 +410,22 @@ class Api {
     this._instance = null;
   }
 
+  public async deleteRoom(roomId: number): Promise<void> {
+    const url = `http://localhost:3333/rooms/${roomId}`;
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this._accessToken}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Failed to delete the room: ${errorText}`);
+    }
+  }
+
   // DATA MEMBERS
   // static instance of the user, the singleton
   //In order to be set to null, api needs to be able to be type null.
@@ -417,6 +433,7 @@ class Api {
   // username and access token of the user
   private _username: string;
   private _accessToken: string;
+
 }
 
 // loader to check if a user is logged in
@@ -461,5 +478,7 @@ export async function getRoomLoader({ params }: { params: RoomLoaderParams }) {
     return redirect("/");
   }
 }
+
+
 
 export default Api;
