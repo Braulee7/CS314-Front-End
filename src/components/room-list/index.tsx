@@ -7,14 +7,12 @@ interface RoomListProps {
 }
 
 function RoomList(props: RoomListProps) {
-  const [rooms, setRooms] = useRooms(props.user);
+  const [rooms] = useRooms(props.user);
   const navigate = useNavigate()
 
   const deleteRoom = async (roomID : number) => {
     try {
       await props.user.deleteRoom(roomID);
-      //having trouble getting this to work :(
-      //setRooms(rooms.filter((room) => room.room_id !== roomID));
       navigate('/');
     } catch (error) {
       console.error('Error:', error);
