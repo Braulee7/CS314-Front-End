@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import Api from "../../util/api";
 import ErrorMessage from "../error-message";
 
-
 interface UserCredentials {
   username: string;
   password: string;
@@ -51,7 +50,7 @@ function CreateUserForm() {
   };
 
   return (
-    <div className=" min-h-screen bg-gray-300 flex justify-center items-start">
+    <div className=" min-h-[100%] bg-gray-300 flex justify-center items-start">
       <div className="bg-white p-20 rounded shadow-md w-110">
         <h1 className="text-2xl font-bold mb-4">Create a new account</h1>
         <form id="create-user-form" onSubmit={handleSubmit}>
