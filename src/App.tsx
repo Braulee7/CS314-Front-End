@@ -5,7 +5,7 @@ import {
   getRoomLoader,
 } from "./util/api";
 import Home from "./components/home";
-import Login from "./components/login";
+import SignInPage from "./components/sign-in-page";
 import ChatRoom from "./components/chat-room";
 
 const router = createBrowserRouter([
@@ -23,7 +23,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <Login />,
+    element: <SignInPage />,
   },
 ]);
 

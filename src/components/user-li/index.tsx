@@ -6,11 +6,12 @@ interface UserLiProps {
 
 function UserLi(props: UserLiProps) {
   return (
-    <li className="flex justify-between w-48 bg-gradient-to-r from-blue-700 to-indigo-600 bg-opacity-75 m-2 rounded-lg border-stone-400 border-2">
+    <li className="flex justify-between w-48 bg-gradient-to-r from-cyan-700 to-gray-600 bg-opacity-75 m-2 rounded-lg border-stone-400 border-2">
       <h1 className="font-bold">{props.user}</h1>
       <button
-        className=" bg-fuchsia-400 m-1 p-1 capitalize rounded-md hover:bg-fuchsia-500 hover:text-white"
-        onClick={() => {
+        className=" bg-gray-800 m-1 p-1 capitalize rounded-md hover:bg-gray-500 text-white"
+        onClick={(event: React.MouseEvent) => {
+          event.preventDefault();
           props.method(props.user);
         }}
       >

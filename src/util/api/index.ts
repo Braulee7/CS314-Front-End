@@ -107,7 +107,7 @@ class Api {
     if (response.ok) {
       // return userid if successful
       const data = await response.json();
-      this._instance = new Api(data.userid, data.accessToken);
+      this._instance = new Api(data.username, data.accessToken);
       return this._instance;
     } else {
       // propogate the correct error message on failure
@@ -157,7 +157,7 @@ class Api {
       const users = await response.json();
       return users;
     } else {
-      // propogate the correct error message on failure
+      // propagate the correct error message on failure
       switch (response.status) {
         case 400:
           throw new Error("Request failed, please try again later");
@@ -265,7 +265,7 @@ class Api {
       const data = await response.json();
       return data.room_id;
     } else {
-      // propogate the correct error message on failure
+      // propagate the correct error message on failure
       switch (response.status) {
         case 400:
           // room does not exist return -1
@@ -411,18 +411,47 @@ class Api {
   }
 
   public async deleteRoom(roomId: number): Promise<void> {
-    const url = `http://localhost:3333/rooms/${roomId}`;
+    const url = `http://localhost:3333/room?room_id=${roomId}`;
     const response = await fetch(url, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this._accessToken}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${this._accessToken}`,
       },
     });
 
     if (!response.ok) {
       const errorText = await response.text();
       throw new Error(`Failed to delete the room: ${errorText}`);
+    }
+  }
+
+  public async createGroup(
+    members: string[],
+    room_name: string
+  ): Promise<number> {
+    const url = "http://localhost:3333/room/group";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.AccessToken,
+      },
+      body: JSON.stringify({ members: members, room_name: room_name }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data.id;
+    } else {
+      switch (response.status) {
+        case 406:
+          throw new Error("Unauthorised user please log back in");
+        case 500:
+          throw new Error("Internal server error, please try again later");
+        default:
+          throw new Error("An unknown error occurred");
+      }
     }
   }
 
@@ -433,7 +462,6 @@ class Api {
   // username and access token of the user
   private _username: string;
   private _accessToken: string;
-
 }
 
 // loader to check if a user is logged in
@@ -478,7 +506,5 @@ export async function getRoomLoader({ params }: { params: RoomLoaderParams }) {
     return redirect("/");
   }
 }
-
-
 
 export default Api;

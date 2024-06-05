@@ -50,7 +50,7 @@ function Login() {
 
   return (
     <div>
-      <div className=" min-h-screen bg-gray-300 flex justify-center items-start">
+      <div className=" min-h-[100%] bg-gray-300 flex justify-center items-start">
         <div className="bg-white p-20 rounded shadow-md w-110">
           <h1 className="text-2xl font-bold mb-4">Login To Your Account</h1>
           <form id="loginForm" onSubmit={handleSubmit}>
