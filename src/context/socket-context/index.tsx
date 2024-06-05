@@ -25,6 +25,7 @@ export const WebSocketProvider: React.FC<{
   useEffect(() => {
     socketRef.current = new Socket(user.AccessToken, room_id);
 
+    socketRef.current?.registerMessageReceiver(updateMessages);
     // close connection when unmounted
     return () => {
       if (socketRef.current) {
@@ -37,7 +38,9 @@ export const WebSocketProvider: React.FC<{
     if (socketRef.current) {
       socketRef.current.emitMessage(message);
     }
-    // update message list locally
+  };
+
+  const updateMessages = (message: MessageObj) => {
     setMessages((prev_messages) => [...prev_messages, message]);
   };
 
