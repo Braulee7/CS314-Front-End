@@ -13,5 +13,5 @@ export default function (user: Api) {
       .catch((e) => console.error(e));
   }, [user]);
 
-  return [rooms];
+  return { rooms, setRooms };
 }
