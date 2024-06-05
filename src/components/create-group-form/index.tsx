@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLoaderData } from "react-router-dom";
+import { updateRooms } from "../../hooks/useRooms";
 import ErrorMessage from "../error-message";
 import Search from "../search";
 import Api from "../../util/api";
@@ -27,6 +28,7 @@ function CreateGroupForm(props: CreateGroupFormProps) {
       const room_id = await user.createGroup(members, room_name);
       navigate(`/rooms/${room_id}`);
       props.closer();
+      updateRooms({ room_id, room_name });
     } catch (e) {
       const error = e as Error;
       setErrorMessage(error.message);

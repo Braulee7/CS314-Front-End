@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import Api, { RoomObj } from "../../util/api";
-import useRooms from "../../hooks/useRooms";
+import { useRooms } from "../../hooks/useRooms";
 
 interface RoomListProps {
   user: Api;
