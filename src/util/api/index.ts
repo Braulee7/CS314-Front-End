@@ -411,7 +411,7 @@ class Api {
   }
 
   public async deleteRoom(roomId: number): Promise<void> {
-    const url = `http://localhost:3333/rooms/${roomId}`;
+    const url = `http://localhost:3333/room?room_id=${roomId}`;
     const response = await fetch(url, {
       method: "DELETE",
       headers: {
