@@ -32,6 +32,7 @@ function Search(props: SearchProps) {
   return (
     <div className="flex flex-col">
       <label htmlFor="search">
+        {/*  svg from https://icons8.com/icons/set/search */}
         <svg
           className=" w-5 h-auto"
           xmlns="http://www.w3.org/2000/svg"

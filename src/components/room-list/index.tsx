@@ -45,6 +45,7 @@ function RoomList(props: RoomListProps) {
             onClick={() => deleteRoom(room_id)}
             className="bg-red-500 hover:bg-red-700 flex justify-center items-center rounded w-[25%] max-w-[25%]"
           >
+            {/* svg from https://icons8.com/icon/83219/trash-can */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               x="0px"
