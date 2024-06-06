@@ -14,6 +14,7 @@ function Logout() {
       navigate("/login");
     } catch (e) {
       const error = e as Error;
+      console.log(error);
       setErrorMessage(error.message);
     }
   };
@@ -22,10 +23,10 @@ function Logout() {
     <>
       <ErrorMessage message={errorMessage} />
       <button
-      onClick={handleLogout}
-      className="mt-4 bg-red-500 text-white p-2 rounded"
+        onClick={handleLogout}
+        className="mt-4 bg-red-500 text-white p-2 rounded"
       >
-       Logout
+        Logout
       </button>
     </>
   );
