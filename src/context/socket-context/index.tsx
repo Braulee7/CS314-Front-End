@@ -25,6 +25,10 @@ export const WebSocketProvider: React.FC<{
   useEffect(() => {
     socketRef.current = new Socket(user.AccessToken, room_id);
 
+    const updateMessages = (message: MessageObj) => {
+      setMessages((prev_messages) => [...prev_messages, message]);
+    };
+
     socketRef.current?.registerMessageReceiver(updateMessages);
     // close connection when unmounted
     return () => {
@@ -32,16 +36,12 @@ export const WebSocketProvider: React.FC<{
         socketRef.current.close();
       }
     };
-  }, [user, room_id]);
+  }, [user, room_id, setMessages]);
 
   const emitMessage = (message: MessageObj) => {
     if (socketRef.current) {
       socketRef.current.emitMessage(message);
     }
-  };
-
-  const updateMessages = (message: MessageObj) => {
-    setMessages((prev_messages) => [...prev_messages, message]);
   };
 
   return (

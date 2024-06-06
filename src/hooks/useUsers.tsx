@@ -23,7 +23,7 @@ export default function useUsers(
     } catch (e) {
       console.log(e);
     }
-  }, [username]);
+  }, [username, user_api]);
 
   return [username, setUsername, users];
 }

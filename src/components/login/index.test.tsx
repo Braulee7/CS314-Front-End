@@ -1,6 +1,5 @@
 import { userEvent } from "@testing-library/user-event";
 import { render } from "@testing-library/react";
-import { useNavigate } from "react-router-dom";
 import Api from "../../util/api";
 import Login from "./index";
 
