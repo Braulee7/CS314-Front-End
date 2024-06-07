@@ -5,7 +5,7 @@ import Login from "./index";
 
 // Mock the navigate function to ensure the test
 // does not fail due to the use of the hook
-Api.Login = vi.fn().mockImplementation(async (user, password) => {
+Api.Login = vi.fn().mockImplementation(async () => {
   return Promise.resolve();
 });
 

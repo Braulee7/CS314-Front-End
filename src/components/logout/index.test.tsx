@@ -54,8 +54,8 @@ describe("Logout", () => {
     const logoutButton = getByText("Logout");
 
     // ACT
-    act(async () => {
-      await userEvent.click(logoutButton);
+    act(() => {
+      userEvent.click(logoutButton);
     });
 
     // ASSERT
