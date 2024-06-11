@@ -51,14 +51,17 @@ class Api {
   public static async Login(username: string, password: string): Promise<Api> {
     const user = { username: username, password: password };
     // POST request to the backend
-    const response = await fetch("http://localhost:3333/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify(user),
-    });
+    const response = await fetch(
+      "https://minstant-messenger-back-end.onrender.com/auth/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(user),
+      }
+    );
 
     // Check status of response
     if (response.ok) {
@@ -94,14 +97,17 @@ class Api {
   ): Promise<Api> {
     const user = { username: username, password: password };
     // POST request to the backend
-    const response = await fetch("http://localhost:3333/user", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify(user),
-    });
+    const response = await fetch(
+      "https://minstant-messenger-back-end.onrender.com/user",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(user),
+      }
+    );
 
     // Check status of response
     if (response.ok) {
@@ -141,7 +147,9 @@ class Api {
   // @return {Promise<UserObj[]>}: the list of users retrieved
   public async SearchForUsers(username: string): Promise<UserObj[]> {
     // set up the query parameters
-    const url = "http://localhost:3333/user?username=" + username;
+    const url =
+      "https://minstant-messenger-back-end.onrender.com/user?username=" +
+      username;
     // GET request to the backend
     const response = await fetch(url, {
       method: "GET",
@@ -170,7 +178,7 @@ class Api {
   }
 
   public async memberOfRoom(room_id: number): Promise<boolean> {
-    const url = `http://localhost:3333/room/members?room_id=${room_id}`;
+    const url = `https://minstant-messenger-back-end.onrender.com/room/members?room_id=${room_id}`;
     const response = await fetch(url, {
       method: "GET",
       headers: {
@@ -195,7 +203,7 @@ class Api {
   }
 
   public async createDirectMessageRoom(other_user: string): Promise<number> {
-    const url = "http://localhost:3333/room";
+    const url = "https://minstant-messenger-back-end.onrender.com/room";
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -221,13 +229,16 @@ class Api {
   }
 
   public async getAllRooms(): Promise<RoomObj[]> {
-    const response = await fetch("http://localhost:3333/room", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + this.AccessToken,
-      },
-    });
+    const response = await fetch(
+      "https://minstant-messenger-back-end.onrender.com/room",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + this.AccessToken,
+        },
+      }
+    );
 
     if (response.ok) {
       const data = await response.json();
@@ -249,7 +260,7 @@ class Api {
   // @return {Promise<number>}: the room id if it exists, -1 otherwise
   public async CheckRoomExists(other_user: string): Promise<number> {
     // set up url
-    const url = `http://localhost:3333/room/exists?user1=${this._username}&user2=${other_user}`;
+    const url = `https://minstant-messenger-back-end.onrender.com/room/exists?user1=${this._username}&user2=${other_user}`;
     // GET request to the backend
     const response = await fetch(url, {
       method: "GET",
@@ -282,7 +293,7 @@ class Api {
     room_id: number,
     message: string
   ): Promise<MessageObj> {
-    const url = "http://localhost:3333/message";
+    const url = "https://minstant-messenger-back-end.onrender.com/message";
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -307,7 +318,7 @@ class Api {
   }
 
   public async getMessages(room_id: number): Promise<MessageObj[]> {
-    const url = `http://localhost:3333/message?room_id=${room_id}`;
+    const url = `https://minstant-messenger-back-end.onrender.com/message?room_id=${room_id}`;
     const response = await fetch(url, {
       method: "GET",
       headers: {
@@ -350,13 +361,16 @@ class Api {
   // a request to the backend with our cookies credentials
   // @return {Promise<ApiObj>}: the new access token and username
   private static async RefreshToken(): Promise<ApiObj> {
-    const response = await fetch("http://localhost:3333/auth/refresh", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
+    const response = await fetch(
+      "https://minstant-messenger-back-end.onrender.com/auth/refresh",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
 
     // check status
     if (response.ok) {
@@ -395,13 +409,16 @@ class Api {
   // Starts a logout request to the server, and invalidates the current instance
   // @return {Promise<void>}: To identify when it is done.
   public static async logout(): Promise<void> {
-    const response = await fetch("http://localhost:3333/auth/logout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
+    const response = await fetch(
+      "https://minstant-messenger-back-end.onrender.com/auth/logout",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
 
     if (!response.ok) {
       throw new Error("Logout failed");
@@ -411,7 +428,7 @@ class Api {
   }
 
   public async deleteRoom(roomId: number): Promise<void> {
-    const url = `http://localhost:3333/room?room_id=${roomId}`;
+    const url = `https://minstant-messenger-back-end.onrender.com/room?room_id=${roomId}`;
     const response = await fetch(url, {
       method: "DELETE",
       headers: {
@@ -430,7 +447,7 @@ class Api {
     members: string[],
     room_name: string
   ): Promise<number> {
-    const url = "http://localhost:3333/room/group";
+    const url = "https://minstant-messenger-back-end.onrender.com/room/group";
     const response = await fetch(url, {
       method: "POST",
       headers: {

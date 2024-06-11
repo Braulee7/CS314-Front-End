@@ -4,7 +4,7 @@ import { MessageObj } from "../api";
 type MessageUpdater = (message: MessageObj) => void;
 export default class {
   constructor(authentication_token: string, room_id: number) {
-    const url = `http://localhost:3333`;
+    const url = `https://minstant-messenger-back-end.onrender.com`;
     this.socket = io(url, {
       auth: { token: authentication_token },
       query: { room_id: room_id },
