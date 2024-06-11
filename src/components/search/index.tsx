@@ -51,7 +51,7 @@ function Search(props: SearchProps) {
       <div className="overflow-y-scroll scroll max-h-36">
         <ul className="absolute max-h-64 overflow-y-scroll scroll z-10  w-25 pr-10 opacity-90 ml-5 flex flex-col justify-center bg-gray-200 bg-opacity-40 backdrop-blur-md rounded drop-shadow-lg">
           {users &&
-            users.map((user: any) => (
+            users.map((user: UserObj) => (
               <UserLi
                 key={user.username}
                 user={user.username}

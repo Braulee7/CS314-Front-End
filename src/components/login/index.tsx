@@ -31,7 +31,7 @@ function Login() {
 
     //try to fetch, catch if fail
     try {
-      const api = await Api.Login(credentials.username, credentials.password);
+      await Api.Login(credentials.username, credentials.password);
       setErrorMessage("");
       // redirect to home page
       navigate("/");

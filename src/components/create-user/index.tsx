@@ -32,10 +32,7 @@ function CreateUserForm() {
 
     // send request to server to create user
     try {
-      const api = await Api.CreateUser(
-        credentials.username,
-        credentials.password
-      );
+      await Api.CreateUser(credentials.username, credentials.password);
       // clear error message
       setErrorMessage("");
       // redirect to home page and sign user in

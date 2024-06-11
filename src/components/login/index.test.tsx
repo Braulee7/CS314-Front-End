@@ -1,13 +1,11 @@
 import { userEvent } from "@testing-library/user-event";
 import { render } from "@testing-library/react";
-import { useNavigate } from "react-router-dom";
 import Api from "../../util/api";
 import Login from "./index";
 
 // Mock the navigate function to ensure the test
 // does not fail due to the use of the hook
-Api.Login = vi.fn().mockImplementation(async (user, password) => {
-  console.log(`Logging in user: ${user} with password: ${password}`);
+Api.Login = vi.fn().mockImplementation(async () => {
   return Promise.resolve();
 });
 
